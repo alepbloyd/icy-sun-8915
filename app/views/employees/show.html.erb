@@ -1,0 +1,22 @@
+<h1> Employee Show Page </h1>
+
+<div id="employee-bio">
+  <p> Name: <%= @employee.name %> </p>
+  <p> Department: <%= @employee.department.name %> </p>
+</div>
+
+<div id="assigned-tickets">
+
+  <%= @employee.tickets_old_to_new.each_with_index do |ticket,index| %>
+    <div id="assigned-ticket-<%=index+1%>">
+      <p> Ticket Subject: <%= ticket.subject %> </p>
+      <p> Ticket Age: <%= ticket.age %> </p>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="oldest-ticket">
+  <p> Oldest Ticket: <%= @employee.oldest_ticket.subject %> </p>
+  <p> Oldest Ticket Age: <%= @employee.oldest_ticket.age %> </p>
+</div>
