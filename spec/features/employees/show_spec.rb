@@ -139,28 +139,60 @@ RSpec.describe "the employee show page" do
     within "#assigned-tickets" do
       expect(page).to have_content("I am hungry")
     end
+  end
 
+  it 'displays the employee level' do
+    department_1 = Department.create!(name: "Technology", floor: 1)
+
+    employee_1 = Employee.create!(name: "Alex", level: 6, department_id: department_1.id)
+
+    ticket_1 = Ticket.create!(subject: "What is a computer",age: 10)
+    ticket_2 = Ticket.create!(subject: "Fix my printer",age: 3)
+    ticket_3 = Ticket.create!(subject: "Where is my chair",age: 1)
+    ticket_4 = Ticket.create!(subject: "Keyboard filled with snakes",age: 20)
+
+    ticket_5 = Ticket.create!(subject: "I am hungry",age: 2)
+    ticket_6 = Ticket.create!(subject: "Soups on!",age: 8)
+
+    et1 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_1)
+    et2 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_2)
+    et3 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_3)
+    et4 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_4)
+
+    visit "/employees/#{employee_1.id}"
+
+    expect(page).to have_content("Employee Level: 6")
+  end
+
+  it 'displays unique list of all other employees that this employee shares tickets with' do
+    department_1 = Department.create!(name: "Technology", floor: 1)
+
+    employee_1 = Employee.create!(name: "Alex", level: 6, department_id: department_1.id)
+    employee_2 = Employee.create!(name: "Kate", level: 7, department_id: department_1.id)
+    employee_3 = Employee.create!(name: "Kiara", level: 8, department_id: department_1.id)
+
+    employee_4 = Employee.create!(name: "Jim", level: 9, department_id: department_1.id)
+    employee_5 = Employee.create!(name: "Jeff", level: 12, department_id: department_1.id)
+    employee_6 = Employee.create!(name: "Jeb", level: 2, department_id: department_1.id)
+
+    ticket_1 = Ticket.create!(subject: "What is a computer",age: 10)
+    ticket_2 = Ticket.create!(subject: "Fix my printer",age: 3)
+    ticket_3 = Ticket.create!(subject: "Where is my chair",age: 1)
+
+    e1_t1 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_1)
+    e2_t1 = EmployeeTicket.create!(employee: employee_2, ticket: ticket_1)
+    e3_t1 = EmployeeTicket.create!(employee: employee_3, ticket: ticket_1)
+
+    visit "/employees/#{employee_1.id}"
+
+    within "#best-friends" do
+      expect(page).to have_content("Kate")
+      expect(page).to have_content("Kiara")
+    end
+
+    expect(page).to_not have_content("Jim")
+    expect(page).to_not have_content("Jeff")
+    expect(page).to_not have_content("Jeb")
   end
 
 end
-
-# Story 3
-
-# As a user,
-# When I visit the employee show page,
-# I do not see any tickets listed that are not assigned to the employee
-# and I see a form to add a ticket to this movie
-# When I fill in the form with the id of a ticket that already exists in the database
-# and I click submit
-# Then I am redirected back to that employees show page
-# and i see the ticket's subject now listed
-# (you do not have to test for sad path, for example if the id does not match an existing ticket
-
-# Story 2
-# Employee Show
-
-# As a user,
-# When I visit the Employee show page,
-# I see the employee's name, department
-# and a list of all of their tickets from oldest to youngest.
-# I also see the oldest ticket assigned to the employee listed separately

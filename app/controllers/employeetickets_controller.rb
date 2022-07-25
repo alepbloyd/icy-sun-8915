@@ -1,7 +1,6 @@
 class EmployeeticketsController < ApplicationController
 
   def create
-
     ticket = Ticket.find(params[:ticket_id])
     employee = Employee.find(params[:employee_id])
 

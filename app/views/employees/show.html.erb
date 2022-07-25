@@ -3,6 +3,7 @@
 <div id="employee-bio">
   <p> Name: <%= @employee.name %> </p>
   <p> Department: <%= @employee.department.name %> </p>
+  <p> Employee Level: <%= @employee.level %> </p>
 </div>
 
 <div id="assigned-tickets">
@@ -29,3 +30,12 @@
   <%= form.submit "Submit"%>
 
 <% end %>
+
+<div id="best-friends">
+  <h2> Best Friends </h2>
+  <%= @employee.best_friends.each do |friend|%>
+    <% if friend.id != @employee.id %>
+      <p> Name: <%=friend.name%> </p>
+    <% end %>
+  <% end %>
+</div>

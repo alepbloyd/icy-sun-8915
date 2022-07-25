@@ -11,4 +11,18 @@ class Employee < ApplicationRecord
     self.tickets_old_to_new.first
   end
 
+  def best_friends
+    employee_ticket_ids = self.ticket_ids
+
+    tickets = Ticket.where(id: employee_ticket_ids)
+
+    friends = []
+
+    tickets.each do |ticket|
+      friends << ticket.employees
+    end
+    
+    friends.flatten.uniq
+  end
+
 end
