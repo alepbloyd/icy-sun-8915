@@ -1,0 +1,17 @@
+<h1> Department Index </h1>
+
+<div id="department-list">
+  <% @departments.each do |department| %>
+    <div id="department-<%=department.id%>">
+      <p> Name: <%= department.name %> </p>
+      <p> Floor: <%= department.floor %> </p>
+
+      <div id="department-<%=department.id%>-employees">
+        <%= department.employees.each do |employee|%>
+          <p>Employee Name: <%= employee.name %> </p>
+        <% end %>
+      </div>
+
+    </div>
+  <% end %>
+</div>
