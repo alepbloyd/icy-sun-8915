@@ -20,3 +20,12 @@
   <p> Oldest Ticket: <%= @employee.oldest_ticket.subject %> </p>
   <p> Oldest Ticket Age: <%= @employee.oldest_ticket.age %> </p>
 </div>
+
+<%= form_with url: "/employeetickets", method: :post, local: true do |form| %>
+
+  <%= form.label :ticket_id, "Ticket ID"%>
+  <%= form.number_field :ticket_id %>
+  <%= form.hidden_field :employee_id, value: @employee.id %>
+  <%= form.submit "Submit"%>
+
+<% end %>

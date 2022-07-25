@@ -107,7 +107,54 @@ RSpec.describe "the employee show page" do
     end
   end
 
+  it 'has a form to add a ticket to this employee, and when filled out with the id of an existing ticket, redirects to the employee show page where the ticket is now listed' do
+
+    department_1 = Department.create!(name: "Technology", floor: 1)
+
+    employee_1 = Employee.create!(name: "Alex", level: 6, department_id: department_1.id)
+
+    ticket_1 = Ticket.create!(subject: "What is a computer",age: 10)
+    ticket_2 = Ticket.create!(subject: "Fix my printer",age: 3)
+    ticket_3 = Ticket.create!(subject: "Where is my chair",age: 1)
+    ticket_4 = Ticket.create!(subject: "Keyboard filled with snakes",age: 20)
+
+    ticket_5 = Ticket.create!(subject: "I am hungry",age: 2)
+    ticket_6 = Ticket.create!(subject: "Soups on!",age: 8)
+
+    et1 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_1)
+    et2 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_2)
+    et3 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_3)
+    et4 = EmployeeTicket.create!(employee: employee_1, ticket: ticket_4)
+
+    visit "/employees/#{employee_1.id}"
+
+    expect(page).to_not have_content("I am hungry")
+
+    fill_in "ticket_id", with: ticket_5.id
+
+    click_on "Submit"
+
+    expect(current_path).to eq("/employees/#{employee_1.id}")
+
+    within "#assigned-tickets" do
+      expect(page).to have_content("I am hungry")
+    end
+
+  end
+
 end
+
+# Story 3
+
+# As a user,
+# When I visit the employee show page,
+# I do not see any tickets listed that are not assigned to the employee
+# and I see a form to add a ticket to this movie
+# When I fill in the form with the id of a ticket that already exists in the database
+# and I click submit
+# Then I am redirected back to that employees show page
+# and i see the ticket's subject now listed
+# (you do not have to test for sad path, for example if the id does not match an existing ticket
 
 # Story 2
 # Employee Show

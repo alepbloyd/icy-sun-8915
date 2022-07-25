@@ -5,4 +5,6 @@ Rails.application.routes.draw do
 
   get '/employees/:id', to: 'employees#show'
 
+  post '/employeetickets', to: 'employeetickets#create'
+
 end
