@@ -1,0 +1,41 @@
+<h1> Employee Show Page </h1>
+
+<div id="employee-bio">
+  <p> Name: <%= @employee.name %> </p>
+  <p> Department: <%= @employee.department.name %> </p>
+  <p> Employee Level: <%= @employee.level %> </p>
+</div>
+
+<div id="assigned-tickets">
+
+  <%= @employee.tickets_old_to_new.each_with_index do |ticket,index| %>
+    <div id="assigned-ticket-<%=index+1%>">
+      <p> Ticket Subject: <%= ticket.subject %> </p>
+      <p> Ticket Age: <%= ticket.age %> </p>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="oldest-ticket">
+  <p> Oldest Ticket: <%= @employee.oldest_ticket.subject %> </p>
+  <p> Oldest Ticket Age: <%= @employee.oldest_ticket.age %> </p>
+</div>
+
+<%= form_with url: "/employeetickets", method: :post, local: true do |form| %>
+
+  <%= form.label :ticket_id, "Ticket ID"%>
+  <%= form.number_field :ticket_id %>
+  <%= form.hidden_field :employee_id, value: @employee.id %>
+  <%= form.submit "Submit"%>
+
+<% end %>
+
+<div id="best-friends">
+  <h2> Best Friends </h2>
+  <%= @employee.best_friends.each do |friend|%>
+    <% if friend.id != @employee.id %>
+      <p> Name: <%=friend.name%> </p>
+    <% end %>
+  <% end %>
+</div>
